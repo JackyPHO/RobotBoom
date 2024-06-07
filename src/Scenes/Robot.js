@@ -17,6 +17,7 @@ class Robot extends Phaser.Scene {
         this.bl = [];
         this.my.sprite.yellow = [];
         this.playerSpeed = 5;
+        this.robotSpeed = 0.6;
     }
     preload() {
         this.load.setPath("./assets/");
@@ -80,7 +81,6 @@ class Robot extends Phaser.Scene {
     }
     update(){
         let my = this.my;
-        console.log(this.lives)
         if(this.lives > 0){
             this.counter++;
             if (this.counter % 100 == 0) {
@@ -94,8 +94,12 @@ class Robot extends Phaser.Scene {
                 my.sprite.yellow.push(this.add.sprite(Math.random()*config.width,80, "yellow").setScale(0.5))
                 my.sprite.life.push(this.add.sprite(Math.random()*config.width,game.config.height - 40, "life"))
             }
+            else if( this.counter % 1999 == 0){
+                this.robotSpeed += 0.2;
+                this.playerSpeed += 1;
+            }
             for (let rrobot of my.sprite.red) {
-                rrobot.y += 1;
+                rrobot.y += this.robotSpeed;
                 if (rrobot.y > 460){
                     rrobot.destroy();
                     const i = my.sprite.red.indexOf(rrobot);
@@ -106,7 +110,7 @@ class Robot extends Phaser.Scene {
                 }
             }
             for (let brobot of my.sprite.blue) {
-                brobot.y += 1;
+                brobot.y += this.robotSpeed;
                 if (brobot.y > 460){
                     brobot.destroy();
                     const i = my.sprite.blue.indexOf(brobot);
@@ -117,7 +121,7 @@ class Robot extends Phaser.Scene {
                 }
             }
             for (let yrobot of my.sprite.yellow) {
-                yrobot.y += 1;
+                yrobot.y += this.robotSpeed;
                 if (yrobot.y > 460){
                     yrobot.destroy();
                     const i = my.sprite.yellow.indexOf(yrobot);
